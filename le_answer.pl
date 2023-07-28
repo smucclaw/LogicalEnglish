@@ -44,7 +44,7 @@ which can be used on the new command interface of LE on SWISH
     ]).
 
 %:- use_module(library(sandbox)).
-:- use_module(library(pengines_sandbox)). 
+% :- use_module(library(pengines_sandbox)). 
 
 % required for sCASP justification (from ~/git/swish/pack/sCASP/examples)
 
@@ -72,15 +72,15 @@ which can be used on the new command interface of LE on SWISH
 
 :- use_module('le_input.pl').  
 :- use_module('syntax.pl').
-:- use_module('api.pl'). 
+% :- use_module('api.pl'). 
 :- use_module('reasoner.pl'). 
 :- use_module('./tokenize/prolog/tokenize.pl').
 
 
 % html libs
-:- use_module(library(http/html_write)).
-:- use_module(library(http/term_html)).
-:- use_module(library(http/js_write)).
+% :- use_module(library(http/html_write)).
+% :- use_module(library(http/term_html)).
+% :- use_module(library(http/js_write)).
 
 :- multifile http:location/3.
 :- dynamic   http:location/3.

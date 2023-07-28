@@ -1,0 +1,1 @@
+:- qcompile('le.pl', [include(user)]).
