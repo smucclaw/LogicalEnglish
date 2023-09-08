@@ -26,6 +26,7 @@ limitations under the License.
 
 :- use_module(library(aggregate)).
 
+:- use_module(date_time).
 :- use_module(kp_loader).
 :- use_module(le_answer).
 
