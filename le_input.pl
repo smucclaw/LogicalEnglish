@@ -2442,6 +2442,25 @@ predef_dict([max_list, List, Number], [thing-thing, list-list], [Number, is, the
 predef_dict([product_list, List, Number], [thing-thing, list-list], [Number, is, the, product, of, List]).
 predef_dict([append, A, B, C],[first_list-list, second_list-list, third_list-list], [appending, A, then, B, gives, C]).
 predef_dict([reverse, A, B], [list-list, other_list-list], [A, is, the, reverse, of, B]).
+
+predef_dict(
+  [is_duration_before, A, days(1), C], [date-date, second_date-date],
+  [A, is, 1, day, before, C]
+).
+
+% predef_dict(
+%   [is_duration_before, A, B, C], [date-date, number-number, second_date-date],
+%   [A, is, Number, Duration, before, C]
+% ) :-
+%   member(Duration_s, [years, months, weeks, days]),
+%   B =.. [Duration_s, Number], (
+%     Duration = Duration_s ;
+%     (Number = 1, Duration_s = years, Duration = year) ;
+%     (Number = 1, Duration_s = months, Duration = month) ;
+%     (Number = 1, Duration_s = weeks, Duration = week) ;
+%     (Number = 1, Duration_s = days, Duration = day)
+%   ).
+
 predef_dict([same_date, T1, T2], [time_1-time, time_2-time], [T1, is, the, same, date, as, T2]). % see reasoner.pl before/2
 predef_dict([between,Minimum,Maximum,Middle], [min-date, max-date, middle-date], 
                 [Middle, is, between, Minimum, &, Maximum]).
@@ -2449,19 +2468,6 @@ predef_dict([is_1_day_after, A, B], [date-date, second_date-date],
                 [A, is, 1, day, after, B]).
 predef_dict([is_days_after, A, B, C], [date-date, number-number, second_date-date],
                 [A, is, B, days, after, C]).
-
-predef_dict(
-  [is_duration_before, A, B, C], [date-date, number-number, second_date-date],
-  [A, is, Number, Duration, before, C]
-) :-
-  member(Duration_s, [years, months, weeks, days]),
-  B =.. [Duration_s, Number], (
-    Duration = Duration_s ;
-    (Number = 1, Duration_s = years, Duration = year) ;
-    (Number = 1, Duration_s = months, Duration = month) ;
-    (Number = 1, Duration_s = weeks, Duration = week) ;
-    (Number = 1, Duration_s = days, Duration = day)
-  ).
 
 predef_dict([immediately_before, T1, T2], [time_1-time, time_2-time], [T1, is, immediately, before, T2]). % see reasoner.pl before/2
 predef_dict([dif, T1, T2], [thing_1-thing, thing_2-thing], [T1, is, different, from, T2]).
