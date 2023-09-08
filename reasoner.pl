@@ -17,7 +17,9 @@ limitations under the License.
 :- module(reasoner,[query/4, query_with_facts/5, query_once_with_facts/5, explanation_node_type/2, render_questions/2,
     run_examples/0, run_examples/1, myClause2/9, myClause/4, taxlogWrapper/10, niceModule/2, refToOrigin/2,
     isafter/2, is_not_before/2, isbefore/2, immediately_before/2, same_date/2, subtract_days/3, this_year/1, uk_tax_year/4, in/2,
-    isExpressionFunctor/1, set_time_of_day/3, start_of_day/2, end_of_day/2, is_days_after/3, is_1_day_after/2, unparse_time/2, product_list/2
+    isExpressionFunctor/1, set_time_of_day/3, start_of_day/2, end_of_day/2, is_days_after/3, is_1_day_after/2, unparse_time/2, product_list/2,
+    my_date_time_stamp/2, is_date/1,
+    is_duration_before/3, is_duration_before_dates/3
     ]).
 
 /** <module> Tax-KB reasoner and utils
@@ -25,6 +27,7 @@ limitations under the License.
 */
 
 :- use_module(library(aggregate)).
+:- use_module(library(clpfd)).
 
 :- use_module(date_time).
 :- use_module(kp_loader).
@@ -685,6 +688,55 @@ is_days_after(Later, Count, Before) :-
 is_days_after(Later, Count, Before) :-
     nonvar(Later), nonvar(Before),
     Count is round(Later - Before) div 86400. % using negative number to indicate reserve order 
+
+is_duration_before(T0, Duration, T1) :-
+  member(T0, [yesterday, today, tomorrow]),
+  member(T1, [yesterday, today, tomorrow]),
+  date_get(T0, Date0),
+  date_get(T1, Date1),
+  is_duration_before_dates(Date0, Duration, Date1),
+  my_date_time_stamp(Date0, T0),
+  my_date_time_stamp(Date1, T1).
+
+p(T, D) :-
+  member(T, [yesterday, today, tomorrow]),
+  date_get(T, D).
+
+is_duration_before_dates(Date0, Duration, Date1) :-
+  Date0 =.. [date, Year0, Month0, Day0],
+  Date1 =.. [date, Year1, Month1, Day1],
+  maplist(is_date, [Date0, Date1]),
+  lexical_leq(Date0, Date1),
+  labeling([max(Year0), max(Year1)], [Year0, Year1, Month0, Month1, Day0, Day1]),
+  date_interval(Date1, Date0, Duration).
+
+% my_date_time_stamp(Date, X) :-
+%   member(X, [yesterday, today, tomorrow]),
+%   date_get(X, Date).
+
+my_date_time_stamp(date(Year, Month, Day), Timestamp) :-
+  date_time_stamp(date(Year, Month, Day, 0, 0, 0, _, _, _), Timestamp).
+
+is_date(date(Year, Month, Day)) :-
+  Year in 1..3000,
+  Month in 1..12,
+  Day in 1..31,
+  (Month #= 4 #\/ Month #= 6 #\/ Month #=9 #\/ Month #= 11) #==> Day #=< 30,
+  Month #= 2 #==> Day #=< 29,
+  (Month #= 2 #/\ Day #= 29) #<==> ((Year mod 400 #= 0) #\/ (Year mod 4 #= 0 #/\ Year mod 100 #\= 0)).
+
+lexical_leq(date(Year0, Month0, Day0), date(Year1, Month1, Day1)) :-
+  Year0 #=< Year1,
+  Year0 #= Year1 #==> Month0 #=< Month1,
+  Month0 #= Month1 #==> Day0 #=< Day1.
+
+% timestamp_date(TimeStamp, date(Year, Month, Day)) :-
+%   is_date(date(Year, Month, Day)),
+%   labeling([max(Year)], [Year, Month, Day]),
+%   date_time_stamp(date(Year, Month, Day, 0, 0, 0, _, _, _), TimeStamp).
+
+  % nonvar(Date0), nonvar(Date1), !,
+  % date_interval(Date0, Date1, Duration).
 
 %! immediately_before(?Earlier,?Later) is det.
 %  Later is 24h after Earlier; at least one must be known

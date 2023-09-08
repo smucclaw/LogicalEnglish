@@ -1,0 +1,10 @@
+the target language is: prolog.
+
+the templates are:
+  dummy template *a thing*.
+
+the knowledge base dates includes:
+  dummy template 0.
+
+query q is:
+  which date is 1 day before today.
