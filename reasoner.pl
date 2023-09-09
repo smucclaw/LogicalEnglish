@@ -743,7 +743,7 @@ is_valid_date(date(Year, Month, Day)) :-
   Day in 1..31,
   (Month in 4 \/ 6 \/ 9 \/ 11) #==> Day #=< 30,
   Month #= 2 #==> Day #=< 29,
-  (Month #= 2 #/\ Day #= 29) #<==> ((Year mod 400 #= 0) #\/ (Year mod 4 #= 0 #/\ Year mod 100 #\= 0)).
+  (Month #= 2 #/\ Day #= 29) #==> ((Year mod 400 #= 0) #\/ (Year mod 4 #= 0 #/\ Year mod 100 #\= 0)).
 
 %! immediately_before(?Earlier,?Later) is det.
 %  Later is 24h after Earlier; at least one must be known

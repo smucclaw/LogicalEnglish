@@ -59,7 +59,7 @@ is_valid_date(date(Day, Month, Year)) :-
   Day in 1..31,
   (Month in 4 \/ 6 \/ 9 \/ 11) #==> Day #=< 30,
   Month #= 2 #==> Day #=< 29,
-  (Month #= 2 #/\ Day #= 29) #<==> ((Year mod 400 #= 0) #\/ (Year mod 4 #= 0 #/\ Year mod 100 #\= 0)).
+  (Month #= 2 #/\ Day #= 29) #==> ((Year mod 400 #= 0) #\/ (Year mod 4 #= 0 #/\ Year mod 100 #\= 0)).
 
 % relative_to_absolute_date(Relative_date, Day / Month / Year) :-
 %   member(Relative_date, [yesterday, today, tomorrow]),
