@@ -77,13 +77,13 @@ is_valid_date(Day / Month / Year) :-
 %   maplist(dif(Relative_date), [yesterday, today, tomorrow]).
 %   % date_time_stamp(date(Year, Month, Day, 0, 0, 0, _, _, _), Timestamp).
 
-z3_is_valid_date(Day / Month / Year) :-
+z3_is_valid_date(date(Year, Month, Day)) :-
   (integer(Day) -> Day_in = Day ; Day_in = day),
   (integer(Month) -> Month_in = Month ; Month_in = month),
   (integer(Year) -> Year_in = Year ; Year_in = year),
   py_iter(date_time_lib:is_valid_date(Day_in, Month_in, Year_in), [Day, Month, Year]).
 
-z3_is_valid_date_pair(Day0 / Month0 / Year0, Day1 / Month1 / Year1) :-
+z3_is_valid_date_pair(date(Year0, Month0, Day0), date(Year1, Month1, Day1)) :-
   (integer(Day0) -> Day0_in = Day0 ; Day0_in = day),
   (integer(Month0) -> Month0_in = Month0 ; Month0_in = month),
   (integer(Year0) -> Year0_in = Year0 ; Year0_in = year),
@@ -92,4 +92,5 @@ z3_is_valid_date_pair(Day0 / Month0 / Year0, Day1 / Month1 / Year1) :-
   (integer(Year1) -> Year1_in = Year1 ; Year1_in = year),
   py_iter(
     date_time_lib:is_valid_date_pair(Day0_in, Month0_in, Year0_in, Day1_in, Month1_in, Year1_in),
-    [Day0, Month0, Year0, Day1, Month1, Year1]).
+    [Day0, Month0, Year0, Day1, Month1, Year1]
+  ).
