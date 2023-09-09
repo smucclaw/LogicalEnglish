@@ -54,7 +54,7 @@ is_duration_before_dates(Date0, Duration, Date1) :-
   ).
 
 is_valid_date(Day / Month / Year) :-
-  Year in 1900..2500,
+  Year in 1900..2200,
   Month in 1..12,
   Day in 1..31,
   (Month in 4 \/ 6 \/ 9 \/ 11) #==> Day #=< 30,

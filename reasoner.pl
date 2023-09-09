@@ -703,12 +703,10 @@ is_duration_before(Date, Duration, Date) :-
   ).
 
 is_duration_before(today, Duration, Date) :-
-  Date = date(_, _, _),
   date_get(today, Today),
   is_duration_before_dates(Today, Duration, Date).
 
 is_duration_before(Date, Duration, today) :-
-  Date = date(_, _, _),
   date_get(today, Today),
   is_duration_before_dates(Date, Duration, Today).
 
@@ -740,7 +738,7 @@ is_duration_before_dates(Date0, Duration, Date1) :-
   ).
 
 is_valid_date(date(Year, Month, Day)) :-
-  Year in 1900..2500,
+  Year in 1900..2200,
   Month in 1..12,
   Day in 1..31,
   (Month in 4 \/ 6 \/ 9 \/ 11) #==> Day #=< 30,

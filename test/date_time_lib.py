@@ -3,7 +3,7 @@ import z3
 
 def constrain_vars(solver, day, day_var, month, month_var, year, year_var):
   constraint = z3.And(
-    1900 <= year_var, year_var <= 2500,
+    1900 <= year_var, year_var <= 2200,
     1 <= month_var, month_var <= 12,
     1 <= day_var, day_var <= 31,
     z3.Implies(
