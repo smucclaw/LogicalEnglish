@@ -15,40 +15,42 @@ is_duration_before(Date, Duration, Date) :-
   ( Date = today
     ; 
     % z3_is_valid_date(Date)
-    (Date = Day / Month / Year, is_valid_date(Date), label([Day, Month, Year]))
+    (Date = date(Year, Month, Day), is_valid_date(Date), label([Day, Month, Year]))
   ).
 
 is_duration_before(today, Duration, Date) :-
-  Date = _ / _ / _,
-  date_get(today, date(Today_year, Today_month, Today_day)),
-  is_duration_before_dates(Today_day / Today_month / Today_year, Duration, Date).
+  date_get(today, Today),
+  is_duration_before_dates(Today, Duration, Date).
 
 is_duration_before(Date, Duration, today) :-
-  Date = _ / _ / _,
-  date_get(today, date(Today_year, Today_month, Today_day)),
-  is_duration_before_dates(Date, Duration, Today_day / Today_month / Today_year).
+  date_get(today, Today),
+  is_duration_before_dates(Date, Duration, Today).
 
 is_duration_before(Date0, Duration, Date1) :-
   is_duration_before_dates(Date0, Duration, Date1).
 
 is_duration_before_dates(Date0, Duration, Date1) :-
-  Date0 = Day0 / Month0 / Year0,
-  Date1 = Day1 / Month1 / Year1,
+  Date0 = date(Year0, Month0, Day0),
+  Date1 = date(Year1, Month1, Day1),
+
+  member(Duration_f, [days, weeks, months, years]),
+  Duration_num in 0..sup,
+  Duration =.. [Duration_f, Duration_num],
+
   maplist(is_valid_date, [Date0, Date1]),
   lex_chain([[Year0, Month0, Day0], [Year1, Month1, Day1]]),
-  % z3_is_valid_date_pair(Date0, Date1),
-  ( Duration =.. [_, N], integer(N),
-    maplist(integer, [Day0, Month0, Year0]), !,
-    date_add(date(Year0, Month0, Day0), Duration, date(Year1, Month1, Day1))
+
+  ( integer(Duration_num), maplist(integer, [Day0, Month0, Year0]), !,
+    date_add(Date0, Duration, Date1)
     ;
-    Duration =.. [D, N], integer(N),
-    maplist(integer, [Day1, Month1, Year1]), !,
-    Duration_neg =.. [D, -N],
-    date_add(date(Year1, Month1, Day1), Duration_neg, date(Year0, Month0, Day0))
+    integer(Duration_num), maplist(integer, [Day1, Month1, Year1]), !,
+    Duration_neg =.. [Duration_f, -Duration_num],
+    date_add(Date1, Duration_neg, Date0)
     ;
     label([Year0, Year1, Month0, Month1, Day0, Day1]),
+    % z3_is_valid_date_pair(Date0, Date1),
     writeln([Date0, Date1]),
-    date_interval(date(Year1, Month1, Day1), date(Year0, Month0, Day0), Duration)
+    date_interval(Date1, Date0, Duration)
   ).
 
 is_valid_date(Day / Month / Year) :-

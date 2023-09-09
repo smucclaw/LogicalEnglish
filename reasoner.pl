@@ -19,7 +19,8 @@ limitations under the License.
     isafter/2, is_not_before/2, isbefore/2, immediately_before/2, same_date/2, subtract_days/3, this_year/1, uk_tax_year/4, in/2,
     isExpressionFunctor/1, set_time_of_day/3, start_of_day/2, end_of_day/2, is_days_after/3, is_1_day_after/2, unparse_time/2, product_list/2,
     is_valid_date/1,
-    is_duration_before/3, is_duration_before_dates/3
+    is_duration_before/3, is_duration_before_dates/3,
+    is_days_before/3
     ]).
 
 /** <module> Tax-KB reasoner and utils
@@ -689,37 +690,57 @@ is_days_after(Later, Count, Before) :-
     nonvar(Later), nonvar(Before),
     Count is round(Later - Before) div 86400. % using negative number to indicate reserve order 
 
-is_duration_before(T0, Duration, T1) :-
-  maplist(relative_to_absolute_date, [T0, T1], [Date0, Date1]),
-  is_duration_before_dates(Date0, Duration, Date1),
-  maplist(absolute_to_relative_date, [Date0, Date1], [T0, T1]).
+is_days_before(Date0, N, Date1) :-
+  is_duration_before(Date0, days(N), Date1).
+
+is_duration_before(Date, Duration, Date) :-
+  member(D, [days, weeks, months, years]),
+  Duration =.. [D, 0],
+  ( Date = today
+    ; 
+    % z3_is_valid_date(Date)
+    (Date = date(Year, Month, Day), is_valid_date(Date), label([Day, Month, Year]))
+  ).
+
+is_duration_before(today, Duration, Date) :-
+  Date = date(_, _, _),
+  date_get(today, Today),
+  is_duration_before_dates(Today, Duration, Date).
+
+is_duration_before(Date, Duration, today) :-
+  Date = date(_, _, _),
+  date_get(today, Today),
+  is_duration_before_dates(Date, Duration, Today).
+
+is_duration_before(Date0, Duration, Date1) :-
+  is_duration_before_dates(Date0, Duration, Date1).
 
 is_duration_before_dates(Date0, Duration, Date1) :-
-  Date0 = Day0 / Month0 / Year0,
-  Date1 = Day1 / Month1 / Year1,
+  Date0 = date(Year0, Month0, Day0),
+  Date1 = date(Year1, Month1, Day1),
+
+  member(Duration_f, [days, weeks, months, years]),
+  Duration_num in 0..sup,
+  Duration =.. [Duration_f, Duration_num],
+
   maplist(is_valid_date, [Date0, Date1]),
   lex_chain([[Year0, Month0, Day0], [Year1, Month1, Day1]]),
-  labeling([max(Year0), max(Year1)], [Year0, Year1, Month0, Month1, Day0, Day1]),
-  date_interval(date(Year1, Month1, Day1), date(Year0, Month0, Day0), Duration).
 
-relative_to_absolute_date(Relative_date, Day / Month / Year) :-
-  member(Relative_date, [yesterday, today, tomorrow]),
-  date_get(Relative_date, date(Year, Month, Day)).
+  ( integer(Duration_num), maplist(integer, [Day0, Month0, Year0]), !,
+    date_add(Date0, Duration, Date1)
+    ;
+    integer(Duration_num), maplist(integer, [Day1, Month1, Year1]), !,
+    Duration_neg =.. [Duration_f, -Duration_num],
+    date_add(Date1, Duration_neg, Date0)
+    ;
+    label([Year0, Year1, Month0, Month1, Day0, Day1]),
+    % z3_is_valid_date_pair(Date0, Date1),
+    % writeln([Date0, Date1]),
+    date_interval(Date1, Date0, Duration)
+  ).
 
-relative_to_absolute_date(Relative_date, _ / _ / _) :-
-  maplist(dif(Relative_date), [yesterday, today, tomorrow]).
-
-absolute_to_relative_date(Day / Month / Year, Relative_date) :-
-  member(Relative_date, [yesterday, today, tomorrow]),
-  date_get(Relative_date, date(Year, Month, Day)).
-
-absolute_to_relative_date(Day / Month / Year, Relative_date) :-
-  maplist(integer, [Year, Month, Day]),
-  maplist(dif(Relative_date), [yesterday, today, tomorrow]).
-  % date_time_stamp(date(Year, Month, Day, 0, 0, 0, _, _, _), Timestamp).
-
-is_valid_date(Day / Month / Year) :-
-  Year in 1..3000,
+is_valid_date(date(Year, Month, Day)) :-
+  Year in 1900..2500,
   Month in 1..12,
   Day in 1..31,
   (Month in 4 \/ 6 \/ 9 \/ 11) #==> Day #=< 30,

@@ -805,6 +805,8 @@ user:holds(Fluent, Time) :- holds(Fluent, Time).
 
 user:has_as_head_before(List, Head, Rest) :- has_as_head_before(List, Head, Rest). 
 
+user:is_days_before(Date0, Number, Date1) :- is_days_before(Date0, Number, Date1).
+
 % for term_expansion
 %user:le_taxlog_translate( en(Text), Terms) :- le_taxlog_translate( en(Text), Terms)..
 %user:le_taxlog_translate( en(Text), File, Base, Terms) :- le_taxlog_translate( en(Text),  File, Base, Terms).
