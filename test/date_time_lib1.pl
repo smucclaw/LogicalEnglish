@@ -47,13 +47,13 @@ is_duration_before_dates(Date0, Duration, Date1) :-
     Duration_neg =.. [Duration_f, -Duration_num],
     date_add(Date1, Duration_neg, Date0)
     ;
-    label([Year0, Year1, Month0, Month1, Day0, Day1]),
+    !, label([Year0, Year1, Month0, Month1, Day0, Day1]),
     % z3_is_valid_date_pair(Date0, Date1),
     writeln([Date0, Date1]),
     date_interval(Date1, Date0, Duration)
   ).
 
-is_valid_date(Day / Month / Year) :-
+is_valid_date(date(Day, Month, Year)) :-
   Year in 1900..2200,
   Month in 1..12,
   Day in 1..31,
