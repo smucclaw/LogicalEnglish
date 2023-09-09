@@ -44,7 +44,6 @@ def is_valid_date(day, month, year):
         z3.Or([var != model[var] for var in [day_var, month_var, year_var]])
     )
 
-
 def is_valid_date_pair(day0, month0, year0, day1, month1, year1):
   day0_var = z3.FreshInt('day')
   month0_var = z3.FreshInt('month')
@@ -60,9 +59,9 @@ def is_valid_date_pair(day0, month0, year0, day1, month1, year1):
   constrain_vars(solver, day1, day1_var, month1, month1_var, year1, year1_var)
 
   lexical_ordering_constraint = z3.And(
-      year0_var <= year1_var,
-      z3.Implies(year0_var == year1_var, month0_var <= month1_var),
-      z3.Implies(month0_var == month1_var, day0_var <= day1_var)
+    year0_var <= year1_var,
+    z3.Implies(year0_var == year1_var, month0_var <= month1_var),
+    z3.Implies(month0_var == month1_var, day0_var <= day1_var)
   )
 
   solver.add(lexical_ordering_constraint)
@@ -70,19 +69,19 @@ def is_valid_date_pair(day0, month0, year0, day1, month1, year1):
   while (solver.check() == z3.sat):
     model = solver.model()
     yield [
-        model[day0_var].as_long(),
-        model[month0_var].as_long(),
-        model[year0_var].as_long(),
-        model[day1_var].as_long(),
-        model[month1_var].as_long(),
-        model[year1_var].as_long()
+      model[day0_var].as_long(),
+      model[month0_var].as_long(),
+      model[year0_var].as_long(),
+      model[day1_var].as_long(),
+      model[month1_var].as_long(),
+      model[year1_var].as_long()
     ]
 
     solver.add(
-        z3.Or([var != model[var] for var in [
-            day0_var, month0_var, year0_var,
-            day1_var, month1_var, year1_var
-        ]])
+      z3.Or([var != model[var] for var in [
+        day0_var, month0_var, year0_var,
+        day1_var, month1_var, year1_var
+      ]])
     )
 
 # print(list(it.islice(is_valid_date('d', 'm', 'y'), 100)))
