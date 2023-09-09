@@ -7,9 +7,8 @@ def constrain_vars(solver, day, day_var, month, month_var, year, year_var):
     1 <= month_var, month_var <= 12,
     1 <= day_var, day_var <= 31,
     z3.Implies(
-        z3.Or(month_var == 4, month_var == 6,
-              month_var == 9, month_var == 12),
-        day_var <= 30
+      z3.Or(month_var == 4, month_var == 6, month_var == 9, month_var == 12),
+      day_var <= 30
     ),
     z3.Implies(month_var == 2, day_var <= 29),
     z3.Implies(
@@ -38,10 +37,14 @@ def is_valid_date(day, month, year):
 
   while (solver.check() == z3.sat):
     model = solver.model()
-    yield [model[day_var].as_long(), model[month_var].as_long(), model[year_var].as_long()]
+    yield [
+      model[day_var].as_long(),
+      model[month_var].as_long(),
+      model[year_var].as_long()
+    ]
 
     solver.add(
-        z3.Or([var != model[var] for var in [day_var, month_var, year_var]])
+      z3.Or([var != model[var] for var in [day_var, month_var, year_var]])
     )
 
 def is_valid_date_pair(day0, month0, year0, day1, month1, year1):
