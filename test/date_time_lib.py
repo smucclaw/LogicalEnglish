@@ -79,12 +79,7 @@ def is_valid_date_pair(day0, month0, year0, day1, month1, year1):
     solver.add(
       z3.Or([var != model[var] for var in [
         day0_var, month0_var, year0_var,
-      ]]) 
-    )
-
-    solver.add(
-      z3.Or([var != model[var] for var in [
-        day1_var, month1_var, year1_var,
+        day1_var, month1_var, year1_var
       ]]) 
     )
 

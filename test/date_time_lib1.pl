@@ -12,8 +12,7 @@
 is_duration_before(Date, Duration, Date) :-
   member(D, [days, weeks, months, years]),
   Duration =.. [D, 0],
-  ( 
-    Date = today
+  ( Date = today
     ; 
     % z3_is_valid_date(Date)
     (Date = Day / Month / Year, is_valid_date(Date), label([Day, Month, Year]))
@@ -37,10 +36,20 @@ is_duration_before_dates(Date0, Duration, Date1) :-
   Date1 = Day1 / Month1 / Year1,
   maplist(is_valid_date, [Date0, Date1]),
   lex_chain([[Year0, Month0, Day0], [Year1, Month1, Day1]]),
-  label([Year0, Year1, Month0, Month1, Day0, Day1]),
   % z3_is_valid_date_pair(Date0, Date1),
-  writeln([Date0, Date1]),
-  date_interval(date(Year1, Month1, Day1), date(Year0, Month0, Day0), Duration).
+  ( Duration =.. [_, N], integer(N),
+    maplist(integer, [Day0, Month0, Year0]), !,
+    date_add(date(Year0, Month0, Day0), Duration, date(Year1, Month1, Day1))
+    ;
+    Duration =.. [D, N], integer(N),
+    maplist(integer, [Day1, Month1, Year1]), !,
+    Duration_neg =.. [D, -N],
+    date_add(date(Year1, Month1, Day1), Duration_neg, date(Year0, Month0, Day0))
+    ;
+    label([Year0, Year1, Month0, Month1, Day0, Day1]),
+    writeln([Date0, Date1]),
+    date_interval(date(Year1, Month1, Day1), date(Year0, Month0, Day0), Duration)
+  ).
 
 is_valid_date(Day / Month / Year) :-
   Year in 1900..2500,
