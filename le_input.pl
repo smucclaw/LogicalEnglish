@@ -2448,8 +2448,11 @@ predef_dict([reverse, A, B], [list-list, other_list-list], [A, is, the, reverse,
 
 predef_dict([is_valid_date, Date], [date-date], [Date, is, a, date]).
 
-predef_dict([date_get, T, Date], [date-date, date-date], [T, is, Date]) :-
-  member(T, [yesterday, today, tomorrow]).
+predef_dict([date_get, T, Date], [date-date, date-date], Is_date) :-
+  member(T, [yesterday, today, tomorrow]), (
+    Is_date = [T, is, Date] ;
+    (T = yesterday, Is_date = [yesterday, was, Date])
+  ).
 
 predef_dict(
   [is_duration_before, A, B, C], [date-date, duration-object, second_date-date],

@@ -23,3 +23,9 @@ query q2 is:
 
 query q3 is:
   yesterday is which date.  
+
+query q4 is:
+  which date is today.
+
+query q5 is:
+  yesterday was which date.
