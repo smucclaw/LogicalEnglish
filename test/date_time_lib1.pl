@@ -51,14 +51,14 @@ is_duration_before_dates(Date0, Duration, Date1) :-
   maplist(is_valid_date, [Date0, Date1]),
   lex_chain([[Year0, Month0, Day0], [Year1, Month1, Day1]]),
 
-  ( integer(Duration_num), maplist(integer, [Day0, Month0, Year0]), !,
+  ( maplist(integer, [Duration_num, Day0, Month0, Year0]), !,
     date_add(Date0, Duration, Date1)
     ;
-    integer(Duration_num), maplist(integer, [Day1, Month1, Year1]), !,
+    maplist(integer, [Duration_num, Day1, Month1, Year1]), !,
     Duration_neg =.. [Duration_f, -Duration_num],
     date_add(Date1, Duration_neg, Date0)
     ;
-    !, label([Year0, Year1, Month0, Month1, Day0, Day1]),
+    label([Year0, Year1, Month0, Month1, Day0, Day1]),
     % z3_is_valid_date_pair(Date0, Date1),
     writeln([Date0, Date1]),
     date_interval(Date1, Date0, Duration)
