@@ -18,9 +18,8 @@ limitations under the License.
     run_examples/0, run_examples/1, myClause2/9, myClause/4, taxlogWrapper/10, niceModule/2, refToOrigin/2,
     isafter/2, is_not_before/2, isbefore/2, immediately_before/2, same_date/2, subtract_days/3, this_year/1, uk_tax_year/4, in/2,
     isExpressionFunctor/1, set_time_of_day/3, start_of_day/2, end_of_day/2, is_days_after/3, is_1_day_after/2, unparse_time/2, product_list/2,
-    is_valid_date/1,
-    is_duration_before/3, is_duration_before_dates/3,
-    is_days_before/3
+    is_valid_date/1, today_is/1, is_duration_before/3
+    % is_duration_before_dates/3
     ]).
 
 /** <module> Tax-KB reasoner and utils
@@ -690,8 +689,7 @@ is_days_after(Later, Count, Before) :-
     nonvar(Later), nonvar(Before),
     Count is round(Later - Before) div 86400. % using negative number to indicate reserve order 
 
-% is_days_before(Date0, N, Date1) :-
-%   is_duration_before(Date0, days(N), Date1).
+today_is(Date) :- date_get(today, Date).
 
 is_duration_before(Date, Duration, Date) :-
   member(D, [days, weeks, months, years]),
