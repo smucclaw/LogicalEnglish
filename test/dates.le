@@ -17,3 +17,9 @@ query q0 is:
 
 query q1 is:
   p of which date.
+
+query q2 is:
+  today is which date.
+
+query q3 is:
+  yesterday is which date.  

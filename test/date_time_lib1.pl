@@ -22,16 +22,23 @@ is_duration_before(Date, Duration, Date) :-
     )
   ).
 
-is_duration_before(today, Duration, Date) :-
-  date_get(today, Today),
-  is_duration_before_dates(Today, Duration, Date).
+% is_duration_before(today, Duration, Date) :-
+%   date_get(today, Today),
+%   is_duration_before_dates(Today, Duration, Date).
 
-is_duration_before(Date, Duration, today) :-
-  date_get(today, Today),
-  is_duration_before_dates(Date, Duration, Today).
+% is_duration_before(Date, Duration, today) :-
+%   date_get(today, Today),
+%   is_duration_before_dates(Date, Duration, Today).
 
 is_duration_before(Date0, Duration, Date1) :-
-  is_duration_before_dates(Date0, Duration, Date1).
+  maplist(to_date, [Date0, Date1], [Date0_, Date1_]),
+  is_duration_before_dates(Date0_, Duration, Date1_).
+
+to_date(Date, Date_) :-
+  member(Date, [yesterday, today, tomorrow]),
+  date_get(Date, Date_).
+
+to_date(Date, Date) :- is_valid_date(Date).
 
 is_duration_before_dates(Date0, Duration, Date1) :-
   Date0 = date(Year0, Month0, Day0),
@@ -57,7 +64,7 @@ is_duration_before_dates(Date0, Duration, Date1) :-
     date_interval(Date1, Date0, Duration)
   ).
 
-is_valid_date(date(Day, Month, Year)) :-
+is_valid_date(date(Year, Month, Day)) :-
   Year in 1900..2200,
   Month in 1..12,
   Day in 1..31,
