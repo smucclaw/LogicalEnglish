@@ -690,8 +690,8 @@ is_days_after(Later, Count, Before) :-
     nonvar(Later), nonvar(Before),
     Count is round(Later - Before) div 86400. % using negative number to indicate reserve order 
 
-is_days_before(Date0, N, Date1) :-
-  is_duration_before(Date0, days(N), Date1).
+% is_days_before(Date0, N, Date1) :-
+%   is_duration_before(Date0, days(N), Date1).
 
 is_duration_before(Date, Duration, Date) :-
   member(D, [days, weeks, months, years]),
@@ -699,7 +699,11 @@ is_duration_before(Date, Duration, Date) :-
   ( Date = today
     ; 
     % z3_is_valid_date(Date)
-    (Date = date(Year, Month, Day), is_valid_date(Date), label([Day, Month, Year]))
+    (
+      is_valid_date(Date),
+      Date =.. [date | Year_month_day],
+      label(Year_month_day)
+    )
   ).
 
 is_duration_before(today, Duration, Date) :-

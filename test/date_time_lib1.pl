@@ -15,7 +15,11 @@ is_duration_before(Date, Duration, Date) :-
   ( Date = today
     ; 
     % z3_is_valid_date(Date)
-    (Date = date(Year, Month, Day), is_valid_date(Date), label([Day, Month, Year]))
+  (
+      is_valid_date(Date),
+      Date =.. [date | Year_month_day],
+      label(Year_month_day)
+    )
   ).
 
 is_duration_before(today, Duration, Date) :-
