@@ -47,7 +47,7 @@ is_duration_before_dates(Date0, Duration, Date1) :-
 
   Duration =.. [Duration_f, Duration_num],
   member(Duration_f, [days, weeks, months, years]),
-  Duration_num in 0..sup,
+  Duration_num #>= 0,
 
   maplist(valid_date, [Date0, Date1]),
   lex_chain([[Year0, Month0, Day0], [Year1, Month1, Day1]]),
