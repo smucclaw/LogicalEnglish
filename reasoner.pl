@@ -31,7 +31,7 @@ limitations under the License.
 :- use_module(kp_loader).
 :- use_module(le_answer).
 
-:- ['date_time_declarative/date_time_declarative'].
+:- ['declarative_date_time/declarative_date_time'].
 
 :- thread_local do_not_fail_undefined_preds/0. 
 

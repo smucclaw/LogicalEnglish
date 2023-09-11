@@ -26,7 +26,7 @@ def constrain_vars(solver, day, day_var, month, month_var, year, year_var):
     if isinstance(x, int):
       solver.add(y == z3.IntVal(x))
 
-def is_valid_date(day, month, year):
+def valid_date_smt(day, month, year):
   day_var = z3.FreshInt('day')
   month_var = z3.FreshInt('month')
   year_var = z3.FreshInt('year')
@@ -47,7 +47,7 @@ def is_valid_date(day, month, year):
       z3.Or([var != model[var] for var in [day_var, month_var, year_var]])
     )
 
-def is_valid_date_pair(day0, month0, year0, day1, month1, year1):
+def valid_date_pair_smt(day0, month0, year0, day1, month1, year1):
   day0_var = z3.FreshInt('day')
   month0_var = z3.FreshInt('month')
   year0_var = z3.FreshInt('year')
