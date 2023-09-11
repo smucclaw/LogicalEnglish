@@ -2446,7 +2446,7 @@ predef_dict([product_list, List, Number], [thing-thing, list-list], [Number, is,
 predef_dict([append, A, B, C],[first_list-list, second_list-list, third_list-list], [appending, A, then, B, gives, C]).
 predef_dict([reverse, A, B], [list-list, other_list-list], [A, is, the, reverse, of, B]).
 
-predef_dict([is_valid_date, Date], [date-date], [Date, is, a, date]).
+predef_dict([valid_date, Date], [date-date], [Date, is, a, date]).
 
 predef_dict([date_get, T, Date], [date-date, date-date], Is_date) :-
   member(T, [yesterday, today, tomorrow]), (
