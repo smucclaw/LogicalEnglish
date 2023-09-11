@@ -18,7 +18,7 @@ limitations under the License.
     run_examples/0, run_examples/1, myClause2/9, myClause/4, taxlogWrapper/10, niceModule/2, refToOrigin/2,
     isafter/2, is_not_before/2, isbefore/2, immediately_before/2, same_date/2, subtract_days/3, this_year/1, uk_tax_year/4, in/2,
     isExpressionFunctor/1, set_time_of_day/3, start_of_day/2, end_of_day/2, is_days_after/3, is_1_day_after/2, unparse_time/2, product_list/2,
-    is_valid_date/1, is_duration_before/3
+    % is_valid_date/1, is_duration_before/3
     % is_duration_before_dates/3
     ]).
 
@@ -27,9 +27,8 @@ limitations under the License.
 */
 
 :- use_module(library(aggregate)).
-:- use_module(library(clpfd)).
 
-:- use_module(date_time).
+:- ['date_time_declarative/date_time_declarative'].
 :- use_module(kp_loader).
 :- use_module(le_answer).
 
@@ -688,61 +687,6 @@ is_days_after(Later, Count, Before) :-
 is_days_after(Later, Count, Before) :-
     nonvar(Later), nonvar(Before),
     Count is round(Later - Before) div 86400. % using negative number to indicate reserve order 
-
-is_duration_before(Date, Duration, Date) :-
-  member(D, [days, weeks, months, years]),
-  Duration =.. [D, 0],
-  ( Date = today
-    ; 
-    % z3_is_valid_date(Date)
-    (
-      is_valid_date(Date),
-      Date =.. [date | Year_month_day],
-      label(Year_month_day)
-    )
-  ).
-
-is_duration_before(Date0, Duration, Date1) :-
-  maplist(to_date, [Date0, Date1], [Date0_, Date1_]),
-  is_duration_before_dates(Date0_, Duration, Date1_).
-
-to_date(Date, Date_) :-
-  member(Date, [yesterday, today, tomorrow]),
-  date_get(Date, Date_).
-
-to_date(Date, Date) :- is_valid_date(Date).
-
-is_duration_before_dates(Date0, Duration, Date1) :-
-  Date0 = date(Year0, Month0, Day0),
-  Date1 = date(Year1, Month1, Day1),
-
-  Duration =.. [Duration_f, Duration_num],
-  member(Duration_f, [days, weeks, months, years]),
-  Duration_num in 0..sup,
-
-  maplist(is_valid_date, [Date0, Date1]),
-  lex_chain([[Year0, Month0, Day0], [Year1, Month1, Day1]]),
-
-  ( maplist(integer, [Duration_num, Day0, Month0, Year0]), !,
-    date_add(Date0, Duration, Date1)
-    ;
-    maplist(integer, [Duration_num, Day1, Month1, Year1]), !,
-    Duration_neg =.. [Duration_f, -Duration_num],
-    date_add(Date1, Duration_neg, Date0)
-    ;
-    label([Year0, Year1, Month0, Month1, Day0, Day1]),
-    % z3_is_valid_date_pair(Date0, Date1),
-    % writeln([Date0, Date1]),
-    date_interval(Date1, Date0, Duration)
-  ).
-
-is_valid_date(date(Year, Month, Day)) :-
-  Year in 1900..2200,
-  Month in 1..12,
-  Day in 1..31,
-  (Month in 4 \/ 6 \/ 9 \/ 11) #==> Day #=< 30,
-  Month #= 2 #==> Day #=< 29,
-  (Month #= 2 #/\ Day #= 29) #==> ((Year mod 400 #= 0) #\/ (Year mod 4 #= 0 #/\ Year mod 100 #\= 0)).
 
 %! immediately_before(?Earlier,?Later) is det.
 %  Later is 24h after Earlier; at least one must be known
