@@ -5,12 +5,11 @@
 ]).
 
 :- use_module(library(clpfd)).
+:- use_module(library(date_time)).
 
 % :- use_module(library(janus)).
 % :- py_add_lib_dir(declarative_date_time).
 % :- py_add_lib_dir(.).
-
-:- use_module(library(date_time)).
 
 valid_year(Year) :- Year in 1900..2200.
 
