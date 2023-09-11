@@ -14,15 +14,15 @@
 valid_year(Year) :- Year in 1900..2200.
 
 is_duration_before_after(Date0, Duration, before, Date1) :-
-  is_duration_before(Date0, Duration, Date1).
+  !, is_duration_before(Date0, Duration, Date1).
 
 is_duration_before_after(Date0, Duration, after, Date1) :-
-  is_duration_before_after(Date1, Duration, before, Date0).
+  !, is_duration_before_after(Date1, Duration, before, Date0).
 
 is_duration_before(Date, Duration, Date) :-
   member(D, [days, weeks, months, years]),
   Duration =.. [D, 0],
-  ( Date = today ; 
+  ( Date = today ;
     % valid_date_z3(Date)
     (
       valid_date(Date),
