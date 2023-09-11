@@ -29,3 +29,6 @@ query q4 is:
 
 query q5 is:
   yesterday was which date.
+
+query q6 is:
+  which date is 3 days after today.

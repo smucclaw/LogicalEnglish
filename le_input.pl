@@ -2448,15 +2448,16 @@ predef_dict([reverse, A, B], [list-list, other_list-list], [A, is, the, reverse,
 
 predef_dict([valid_date, Date], [date-date], [Date, is, a, date]).
 
-predef_dict([date_get, T, Date], [date-date, date-date], Is_date) :-
+predef_dict([to_date, T, Date], [date-date, date-date], Is_date) :-
   member(T, [yesterday, today, tomorrow]), (
     Is_date = [T, is, Date] ;
     (T = yesterday, Is_date = [yesterday, was, Date])
   ).
 
 predef_dict(
-  [is_duration_before, A, B, C], [date-date, duration-object, second_date-date],
-  [A, is, Number, Duration, before, C]
+  [is_duration_before_after, A, B, C, D],
+  [date-date, duration-object, before_after-object, second_date-date],
+  [A, is, Number, Duration, C, D]
 ) :-
   member(Duration_s, [years, months, weeks, days]),
   B =.. [Duration_s, Number], (
@@ -2467,7 +2468,8 @@ predef_dict(
       (Duration_s = weeks, Duration = week) ;
       (Duration_s = days, Duration = day)
     )
-  ).
+  ),
+  member(C, [before, after]).
 
 % predef_dict([same_date, T1, T2], [time_1-time, time_2-time], [T1, is, the, same, date, as, T2]). % see reasoner.pl before/2
 % predef_dict([between,Minimum,Maximum,Middle], [min-date, max-date, middle-date], 

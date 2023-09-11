@@ -1,7 +1,7 @@
 :- module(declarative_date_time, [
   valid_date/1, % valid_date_smt/1,
-  date_get/2,
-  is_duration_before/3
+  to_date/2,
+  is_duration_before_after/4
 ]).
 
 :- use_module(library(clpfd)).
@@ -12,6 +12,12 @@
 % :- py_add_lib_dir(.).
 
 valid_year(Year) :- Year in 1900..2200.
+
+is_duration_before_after(Date0, Duration, before, Date1) :-
+  is_duration_before(Date0, Duration, Date1).
+
+is_duration_before_after(Date0, Duration, after, Date1) :-
+  is_duration_before_after(Date1, Duration, before, Date0).
 
 is_duration_before(Date, Duration, Date) :-
   member(D, [days, weeks, months, years]),
