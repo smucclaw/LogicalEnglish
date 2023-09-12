@@ -64,7 +64,12 @@ def valid_date_pair_smt(day0, month0, year0, day1, month1, year1):
   lexical_ordering_constraint = z3.And(
     year0_var <= year1_var,
     z3.Implies(year0_var == year1_var, month0_var <= month1_var),
-    z3.Implies(month0_var == month1_var, day0_var <= day1_var)
+    z3.Implies(
+      z3.And(
+        year0_var == year1_var,
+        month0_var == month1_var,
+      ),
+      day0_var <= day1_var)
   )
 
   solver.add(lexical_ordering_constraint)
