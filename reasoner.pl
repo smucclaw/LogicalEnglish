@@ -726,6 +726,11 @@ uk_tax_year(Start,StartYear,Start,End) :- must_be(integer,StartYear),
     format_time(string(Start),"%F",date(StartYear,4,6)),
     format_time(string(End),"%F",date(EndYear,4,5)).
 
+is_duration_before_after(Date0, Duration, before, Date1) :-
+  !, is_duration_before(Date0, Duration, Date1).
+
+is_duration_before_after(Date0, Duration, after, Date1) :-
+  !, is_duration_before_after(Date1, Duration, before, Date0).
 
 %! in(X,List) is nondet.
 %  X is in List
