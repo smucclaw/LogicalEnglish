@@ -13,7 +13,6 @@
 
 valid_year(Year) :- Year in 1900..2200.
 
-
 is_duration_before(Date, Duration, Date) :-
   member(D, [days, weeks, months, years]),
   Duration =.. [D, 0],
