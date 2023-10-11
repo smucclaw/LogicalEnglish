@@ -734,11 +734,14 @@ is_duration_before_after_within(Date0, Duration, after, Date1) :-
 
 is_duration_before_after_within(Date0, Duration, within, Date1) :-
   is_duration_before(Date0, Duration, Date),
-  is_duration_before(Date1, _, Date).
+  between_dates(Date0, Date1, Date).
 
 is_duration_before_after_within(Date0, Duration, within, Date1) :-
-  is_duration_before(Date1, Duration, Date),
-  is_duration_before(Date0, _, Date).
+  is_duration_before(Date, Duration, Date0),
+  between_dates(Date, Date1, Date0).
+
+between_dates(Date0, Date, Date1) :-
+  is_duration_before(Date0, _, Date), is_duration_before(Date, _, Date1).
 
 %! in(X,List) is nondet.
 %  X is in List
