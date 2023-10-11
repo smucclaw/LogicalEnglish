@@ -1,7 +1,9 @@
 :- module(declarative_date_time, [
   valid_date/1, % valid_date_smt/1,
   to_date/2,
-  is_duration_before/3
+  is_duration_before/3,
+  between_dates/3,
+  is_duration_before_after_within/4
 ]).
 
 :- use_module(library(clpfd)).
@@ -10,6 +12,24 @@
 % :- use_module(library(janus)).
 % :- py_add_lib_dir(declarative_date_time).
 % :- py_add_lib_dir(.).
+
+is_duration_before_after_within(Date0, Duration, before, Date1) :-
+  is_duration_before(Date0, Duration, Date1).
+
+is_duration_before_after_within(Date0, Duration, after, Date1) :-
+  is_duration_before(Date1, Duration, Date0).
+
+is_duration_before_after_within(Date0, Duration, within, Date1) :-
+  is_duration_before(Date0, Duration, Date),
+  between_dates(Date0, Date1, Date), !.
+
+is_duration_before_after_within(Date0, Duration, within, Date1) :-
+  is_duration_before(Date, Duration, Date0),
+  between_dates(Date, Date1, Date0), !.
+
+between_dates(Date0, Date, Date1) :-
+  is_duration_before(Date0, days(_), Date),
+  is_duration_before(Date, days(_), Date1), !.
 
 valid_year(Year) :- Year in 1900..2200.
 
