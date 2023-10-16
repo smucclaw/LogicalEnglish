@@ -978,6 +978,13 @@ condition(FinalExpression, _, Map1, MapN) -->
     newline, spaces(Ind2), where_, conditions(Ind2, Map3, Map4, Goals),
     modifiers(findall(Term,Goals,Set), Map4, MapN, FinalExpression).
 
+% the Value is the set of all Asset Net such that
+condition(FinalExpression, _, Map1, MapN) --> 
+    variable([is], Value, Map1, Map2), is_the_set_of_all_, extract_variable([such], [], NameWords, [], _), such_that_, !, 
+    { name_predicate(NameWords, Name), update_map(Each, Name, Map2, Map3) }, newline, 
+    spaces(Ind), conditions(Ind, Map3, Map4, Conds), 
+    modifiers(aggregate_all(set(Each),Conds,Value), Map4, MapN, FinalExpression).
+
 % for every a party is a party in the event, it is the case that:
 condition(FinalExpression, _, Map1, MapN) -->  
     for_all_cases_in_which_, newline, !, 
@@ -992,6 +999,13 @@ condition(FinalExpression, _, Map1, MapN) -->
     { name_predicate(NameWords, Name), update_map(Each, Name, Map2, Map3) }, newline, 
     spaces(Ind), conditions(Ind, Map3, Map4, Conds), 
     modifiers(aggregate_all(sum(Each),Conds,Value), Map4, MapN, FinalExpression).
+
+% the Value is the sum of each unique Asset Net such that
+% condition(FinalExpression, _, Map1, MapN) --> 
+%     variable([is], Value, Map1, Map2), is_the_sum_of_each_unique_, extract_variable([such], [], NameWords, [], _), such_that_, !, 
+%     { name_predicate(NameWords, Name), update_map(Each, Name, Map2, Map3) }, newline, 
+%     spaces(Ind), conditions(Ind, Map3, Map4, Conds), 
+%     modifiers((aggregate_all(set(Each),Conds,Set), aggregate_all(sum(Each),member(Each, Set),Value)), Map4, MapN, FinalExpression).
 
 % the Value is the max Asset Net such that
 condition(FinalExpression, _, Map1, MapN) --> 
@@ -1103,6 +1117,8 @@ not_ --> [non], spaces(_), [risulta], spaces(_), [che], spaces(_). % italian
 not_ --> [ce], spaces(_), [n],[A],[est], spaces(_), [pas], spaces(_), [le], spaces(_), [cas], spaces(_), [que], spaces(_), {atom_string(A, "'")}. % french
 not_ --> [no], spaces(_), [es], spaces(_), [el], spaces(_), [caso], spaces(_), [que], spaces(_).  % spanish
 
+% is_the_sum_of_each_unique_ --> [is], spaces(_), [the], spaces(_), [sum], spaces(_), [of], spaces(_), [each], spaces(_), [unique], spaces(_).
+
 is_the_sum_of_each_ --> [is], spaces(_), [the], spaces(_), [sum], spaces(_), [of], spaces(_), [each], spaces(_) .
 is_the_sum_of_each_ --> [è], spaces(_), [la], spaces(_), [somma], spaces(_), [di], spaces(_), [ogni], spaces(_). % italian
 is_the_sum_of_each_ --> [es], spaces(_), [la], spaces(_), [suma], spaces(_), [de], spaces(_), [cada], spaces(_). % spanish
@@ -1155,6 +1171,7 @@ is_a_set_of_ --> [est], spaces(_), [un],  spaces(_), [ensemble],  spaces(_), [de
 is_a_set_of_ --> [est], spaces(_), [un],  spaces(_), [ensemble],  spaces(_), [de],  spaces(_). % italian
 
 is_the_bag_of_all_ --> [is], spaces(_), [the], spaces(_), [bag], spaces(_), [of], spaces(_), [all], spaces(_).
+is_the_set_of_all_ --> [is], spaces(_), [the], spaces(_), [set], spaces(_), [of], spaces(_), [all], spaces(_).
 
 where_ --> [where], spaces(_). 
 where_ --> [en], spaces(_), [donde], spaces(_). % spanish
