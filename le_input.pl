@@ -1000,6 +1000,13 @@ condition(FinalExpression, _, Map1, MapN) -->
     spaces(Ind), conditions(Ind, Map3, Map4, Conds), 
     modifiers(aggregate_all(sum(Each),Conds,Value), Map4, MapN, FinalExpression).
 
+% the Value is the number of Asset Net such that
+condition(FinalExpression, _, Map1, MapN) --> 
+    variable([is], Value, Map1, Map2), is_the_number_of_, extract_variable([such], [], NameWords, [], _), such_that_, !, 
+    { name_predicate(NameWords, Name), update_map(Each, Name, Map2, Map3) }, newline, 
+    spaces(Ind), conditions(Ind, Map3, Map4, Conds), 
+    modifiers(aggregate_all(count(Each),Conds,Value), Map4, MapN, FinalExpression).
+
 % the Value is the sum of each unique Asset Net such that
 % condition(FinalExpression, _, Map1, MapN) --> 
 %     variable([is], Value, Map1, Map2), is_the_sum_of_each_unique_, extract_variable([such], [], NameWords, [], _), such_that_, !, 
@@ -1119,10 +1126,12 @@ not_ --> [no], spaces(_), [es], spaces(_), [el], spaces(_), [caso], spaces(_), [
 
 % is_the_sum_of_each_unique_ --> [is], spaces(_), [the], spaces(_), [sum], spaces(_), [of], spaces(_), [each], spaces(_), [unique], spaces(_).
 
-is_the_sum_of_each_ --> [is], spaces(_), [the], spaces(_), [sum], spaces(_), [of], spaces(_), [each], spaces(_) .
+is_the_sum_of_each_ --> [is], spaces(_), [the], spaces(_), [sum], spaces(_), [of], spaces(_), [each], spaces(_).
 is_the_sum_of_each_ --> [è], spaces(_), [la], spaces(_), [somma], spaces(_), [di], spaces(_), [ogni], spaces(_). % italian
 is_the_sum_of_each_ --> [es], spaces(_), [la], spaces(_), [suma], spaces(_), [de], spaces(_), [cada], spaces(_). % spanish
 is_the_sum_of_each_ --> [est], spaces(_), [la], spaces(_), [somme], spaces(_), [de], spaces(_), [chaque], spaces(_). % french
+
+is_the_number_of_ --> [is], spaces(_), [the], spaces(_), [number], spaces(_), [of], spaces(_).
 
 is_the_max_ --> [is], spaces(_), [the], spaces(_), [max], spaces(_) .
 is_the_min_ --> [is], spaces(_), [the], spaces(_), [min], spaces(_) .
