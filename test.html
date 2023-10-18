@@ -30,7 +30,9 @@ query q is:
     `;
 
     const solutionElement = document.getElementById("solution");
-    const firstSolution = swipl.prolog.query(query).once().X;
+    const firstSolution = swipl.prolog.query(query).once();
+
+    console.log("First solution:\n", firstSolution);
     solutionElement.textContent = firstSolution;
   })();
 </script>

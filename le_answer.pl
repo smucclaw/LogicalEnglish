@@ -992,8 +992,8 @@ produce_html_explanation(le_Explanation(Trees), Explanation) :-
 	% 	]) 
 	% ), ExplanationInHtml),
     phrase(html(HTML), ExplanationInHtml),
-    % with_output_to(string(Explanation), print_html(ExplanationInHtml)). 
-    Explanation = ExplanationInHtml.
+    with_output_to(string(Explanation), print_html(ExplanationInHtml)). 
+    % Explanation = ExplanationInHtml.
 
 explanationLEHTML(s(G,_Ref,_,_,_,C),[li(title="Rule inference",[span(class=Class," "), b(G)|RestTree])]) :- 
     %Navigator=' a rule', 
