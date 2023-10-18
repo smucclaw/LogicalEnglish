@@ -806,14 +806,6 @@ user:holds(Fluent, Time) :- holds(Fluent, Time).
 
 user:has_as_head_before(List, Head, Rest) :- has_as_head_before(List, Head, Rest). 
 
-user:valid_date(A, B) :- valid_date(A, B).
-user:to_date(A, B) :- to_date(A, B).
-user:is_duration_before(A, B, C) :- is_duration_before(A, B, C).
-user:between_dates(A, B, C) :- between_dates(A, B, C).
-user:is_duration_before_after_within(A, B, C, D) :- is_duration_before_after_within(A, B, C, D).
-
-user:product_list(A, B) :- product_list(A, B).
-
 % for term_expansion
 %user:le_taxlog_translate( en(Text), Terms) :- le_taxlog_translate( en(Text), Terms)..
 %user:le_taxlog_translate( en(Text), File, Base, Terms) :- le_taxlog_translate( en(Text),  File, Base, Terms).
