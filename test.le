@@ -1,11 +1,16 @@
 the target language is: prolog.
 
 the templates are:
-  p.
+ *a person* is the parent of *a person*. 
+ *a person* is the grandparent of *a person*. 
 
 the knowledge base rules includes:
-  p
-  if 0 < 1.
+  a person is the grandparent of an other person
+  if the person is the parent of a third person
+  and the third person is the parent of the other person.
+
+  alice is the parent of bob.
+  bob is the parent of charlie.
 
 query q is:
-  p.
+  which person is the parent of which other person.

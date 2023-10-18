@@ -1,5 +1,7 @@
 <div id="solution"></div>
+
 <script src="https://SWI-Prolog.github.io/npm-swipl-wasm/3/5/5/index.js"></script>
+
 <script>
   (async () => {
     const swipl = await SWIPL({ arguments: ["-q"] });
@@ -12,27 +14,35 @@
 the target language is: prolog.
 
 the templates are:
-  p.
+ *a person* is the parent of *a person*. 
+ *a person* is the grandparent of *a person*.
 
 the knowledge base rules includes:
-  p
-  if 0 < 1.
+  a person is the grandparent of an other person
+  if the person is the parent of a third person
+  and the third person is the parent of the other person.
+
+scenario s is:
+  alice is the parent of bob.
+  bob is the parent of charlie.
 
 query q is:
-  p.
+  which person is the grandparent of which other person.
     `;
 
     const le_query = "q";
 
     // const query = "member(X, [a, b, c]).";
     const query = `
-      le_answer:parse_and_query_and_explanation("test", en("${le_prog}"), ${le_query}, with(), Answer).
+      le_answer:parse_and_query_and_explanation("test", en("${le_prog}"), ${le_query}, with(s), JustificationHtml).
     `;
 
-    const solutionElement = document.getElementById("solution");
-    const firstSolution = swipl.prolog.query(query).once();
+    const results = swipl.prolog.query(query);
+    const soln0 = await results.next().value.JustificationHtml;
 
-    console.log("First solution:\n", firstSolution);
-    solutionElement.textContent = firstSolution;
+    console.log("First solution:\n", soln0);
+
+    const solutionElement = document.getElementById("solution");
+    solutionElement.innerHTML = soln0;
   })();
 </script>
