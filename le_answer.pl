@@ -80,7 +80,7 @@ which can be used on the new command interface of LE on SWISH
 
 % html libs
 :- use_module(library(http/html_write)).
-:- use_module(library(http/term_html)).
+% :- use_module(library(http/term_html)).
 % :- use_module(library(http/js_write)).
 
 % :- use_module(library(r/r_call)).
@@ -992,7 +992,8 @@ produce_html_explanation(le_Explanation(Trees), Explanation) :-
 	% 	]) 
 	% ), ExplanationInHtml),
     phrase(html(HTML), ExplanationInHtml),
-    with_output_to(string(Explanation), print_html(ExplanationInHtml)). 
+    % with_output_to(string(Explanation), print_html(ExplanationInHtml)). 
+    Explanation = ExplanationInHtml.
 
 explanationLEHTML(s(G,_Ref,_,_,_,C),[li(title="Rule inference",[span(class=Class," "), b(G)|RestTree])]) :- 
     %Navigator=' a rule', 
