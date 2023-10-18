@@ -1,0 +1,11 @@
+<div id="solution"></div>
+<script src="https://SWI-Prolog.github.io/npm-swipl-wasm/3/5/5/index.js"></script>
+<script>
+  (async () => {
+    const swipl = await SWIPL({ arguments: ["-q"] });
+    const query = "member(X, [a, b, c]).";
+    const solutionElement = document.getElementById("solution");
+    const firstSolution = swipl.prolog.query(query).once().X;
+    solutionElement.textContent = firstSolution;
+  })();
+</script>

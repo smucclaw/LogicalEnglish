@@ -1,0 +1,11 @@
+the target language is: prolog.
+
+the templates are:
+  p.
+
+the knowledge base rules includes:
+  p
+  if 0 < 1.
+
+query q is:
+  p.

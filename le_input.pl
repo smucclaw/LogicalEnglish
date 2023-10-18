@@ -114,7 +114,7 @@ query three is:
 :- use_module('le_local.pl'). % module to handle the local filesystem 
 :- endif.
 
-:- use_module(library(r/r_call)).
+% :- use_module(library(r/r_call)).
 :- use_module('reasoner.pl').
 :- use_module(library(prolog_stack)).
 :- table addExp//2, mulExp//2.

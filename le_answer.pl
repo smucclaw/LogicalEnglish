@@ -72,7 +72,8 @@ which can be used on the new command interface of LE on SWISH
 
 :- use_module('le_input.pl').  
 :- use_module('syntax.pl').
-:- use_module('api.pl'). 
+:- use_module(kp_loader).
+% :- use_module('api.pl'). 
 :- use_module('reasoner.pl'). 
 :- use_module('./tokenize/prolog/tokenize.pl').
 
@@ -82,8 +83,8 @@ which can be used on the new command interface of LE on SWISH
 :- use_module(library(http/term_html)).
 :- use_module(library(http/js_write)).
 
-:- use_module(library(r/r_call)).
-:- use_module(library(r/r_data)).
+% :- use_module(library(r/r_call)).
+% :- use_module(library(r/r_data)).
 
 
 
@@ -914,6 +915,10 @@ parse_and_query(File, Document, Question, Scenario, AnswerExplanation) :-
     forall(member(T, [(:-module(File,[]))|ExpandedTerms]), assertz(M:T)), % simulating term expansion
     answer( Question, Scenario, AnswerExplanation). 
 
+hack_module_for_taxlog(M) :-  
+    retractall(kp_loader:module_api_hack(_)),
+    assert(kp_loader:module_api_hack(M)).
+
 parse_and_query_and_explanation(File, Document, Question, Scenario, Answer) :-
     %print_message(informational, "parse_and_query and explanation ~w ~w ~w ~w"-[File, Document, Question, Scenario]),
     le_taxlog_translate(Document, _, 1, TaxlogTerms),
@@ -952,13 +957,13 @@ non_expanded_terms(Name, TaxlogTerms, ExpandedTerms) :-
     % to save as a separated file
     (member(target(prolog),TaxlogTerms) -> 
         ( %myDeclaredModule(Name),  % the module in the editor
-        split_module_name(Name, FileName, URL), 
-        atomic_list_concat([FileName,'-prolog','.pl'], NewFileName), 
-        (URL\=''->atomic_list_concat([FileName,'-prolog', '+', URL], NewModule); atomic_list_concat([FileName,'-prolog'], NewModule)),
-        %print_message(informational, " Processing module ~w filename ~w URL ~w"-[Name, FileName, URL]),  
-        dump(all, NewModule, ExpandedTerms_0, String), 
-        %print_message(informational, " To dump this ~w"-[String]),
-        update_file(NewFileName, URL, String),
+        % split_module_name(Name, FileName, URL), 
+        % atomic_list_concat([FileName,'-prolog','.pl'], NewFileName), 
+        % (URL\=''->atomic_list_concat([FileName,'-prolog', '+', URL], NewModule); atomic_list_concat([FileName,'-prolog'], NewModule)),
+        % %print_message(informational, " Processing module ~w filename ~w URL ~w"-[Name, FileName, URL]),  
+        % dump(all, NewModule, ExpandedTerms_0, String), 
+        % %print_message(informational, " To dump this ~w"-[String]),
+        % update_file(NewFileName, URL, String),
         ExpandedTerms_1 = [just_saved_scasp(null, null)|ExpandedTerms_0]) ; ExpandedTerms_1 = ExpandedTerms_0),
     %print_message(informational, " Terms ~w"-[ExpandedTerms_1]), 
     (member(target(scasp),TaxlogTerms) -> 
