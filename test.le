@@ -14,3 +14,6 @@ the knowledge base rules includes:
 
 query q is:
   which person is the parent of which other person.
+
+query date is:
+  which date is 180 days within today.
