@@ -81,7 +81,7 @@ which can be used on the new command interface of LE on SWISH
 % html libs
 :- use_module(library(http/html_write)).
 :- use_module(library(http/term_html)).
-:- use_module(library(http/js_write)).
+% :- use_module(library(http/js_write)).
 
 % :- use_module(library(r/r_call)).
 % :- use_module(library(r/r_data)).

@@ -3,7 +3,32 @@
 <script>
   (async () => {
     const swipl = await SWIPL({ arguments: ["-q"] });
-    const query = "member(X, [a, b, c]).";
+
+    await swipl.prolog.load_string(`
+      :- ['https://github.com/smucclaw/LogicalEnglish/raw/qlf-wasm/le_answer.qlf'].
+    `);
+
+    const le_prog = `
+the target language is: prolog.
+
+the templates are:
+  p.
+
+the knowledge base rules includes:
+  p
+  if 0 < 1.
+
+query q is:
+  p.
+    `;
+
+    const le_query = "q";
+
+    // const query = "member(X, [a, b, c]).";
+    const query = `
+      le_answer:parse_and_query_and_explanation("test", en("${le_prog}"), ${le_query}, with(), Answer).
+    `;
+
     const solutionElement = document.getElementById("solution");
     const firstSolution = swipl.prolog.query(query).once().X;
     solutionElement.textContent = firstSolution;
