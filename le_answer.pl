@@ -70,11 +70,11 @@ which can be used on the new command interface of LE on SWISH
 %:- multifile sandbox:safe_primitive/1.
 %:- multifile sandbox:safe_meta/2.
 
-:- use_module('le_input.pl').  
-:- use_module('syntax.pl').
+:- use_module(le_input).  
+:- use_module(syntax).
 :- use_module(kp_loader).
-% :- use_module('api.pl'). 
-:- use_module('reasoner.pl'). 
+% :- use_module(api). 
+:- use_module(reasoner). 
 :- use_module('./tokenize/prolog/tokenize.pl').
 
 
