@@ -39,7 +39,9 @@ which can be used on the new command interface of LE on SWISH
     op(1150, fx, show),
     op(1150, fx, abducible),
     dump/4, dump/3, dump/2, dump_scasp/3, split_module_name/3, just_saved_scasp/2,
-    prepare_query/6, assert_facts/2, retract_facts/2, parse_and_query/5, parse_and_query_and_explanation/5,
+    prepare_query/6, assert_facts/2, retract_facts/2, parse_and_query/5,
+    parse_and_query_and_explanation/5,
+    parse_en_and_query_and_explanation/4,
     le_expanded_terms/2, show/1, source_lang/1, targetBody/6
     ]).
 
@@ -918,6 +920,9 @@ parse_and_query(File, Document, Question, Scenario, AnswerExplanation) :-
 hack_module_for_taxlog(M) :-  
     retractall(kp_loader:module_api_hack(_)),
     assert(kp_loader:module_api_hack(M)).
+
+parse_en_and_query_and_explanation(Document, Question, Scenario, Answer) :-
+  parse_and_query_and_explanation("test", en(Document), Question, with(Scenario), Answer).
 
 parse_and_query_and_explanation(File, Document, Question, Scenario, Answer) :-
     %print_message(informational, "parse_and_query and explanation ~w ~w ~w ~w"-[File, Document, Question, Scenario]),
