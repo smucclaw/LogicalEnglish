@@ -936,7 +936,9 @@ parse_and_query_and_explanation(File, Document, Question, Scenario, Answer) :-
     %answer( Question, Scenario, Answer). 
     answer( Question, Scenario, le(LE_Explanation), _Result), 
     %with_output_to(string(Answer), write(LE_Explanation)). 
-    produce_html_explanation(LE_Explanation, Answer). 
+    produce_html_explanation(LE_Explanation, Answer),
+    forall(member(T, [(:-module(File,[]))|ExpandedTerms]), retract(M:T)),
+    M:retract(myDeclaredModule_(File)). 
 
 % non_expanded_terms/2 is just as the one above, but with semantics2prolog2 instead of semantics2prolog that has many other dependencies. 
 non_expanded_terms(Name, TaxlogTerms, ExpandedTerms) :-
