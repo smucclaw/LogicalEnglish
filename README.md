@@ -1,3 +1,6 @@
+> [!NOTE]  
+As of 2024-07-31, this fork is deprecated and no longer maintained.
+
 # How to get this set up, for CCLAW folks
 
 1. Install the following two VSCode extensions. (Yes, it's probably best to use VSCode for this.)
